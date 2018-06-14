@@ -1,0 +1,126 @@
+
+#foreach($apiDoc in $apiList)
+
+# ${apiDoc.name}
+
+**简介：**
+- ${apiDoc.description}
+
+#set($contact=$apiDoc.contact)
+**联系人：**
+- 姓名：${contact.name}  ,  邮箱：${contact.email}
+
+**HOST：**
+-  ${apiDoc.host}
+
+**版本：**
+-  ${apiDoc.version}
+
+---
+
+#foreach($api in $apiDoc.apiList)
+
+
+
+${api.name}
+----
+
+**描述：**
+-  ${api.description}
+
+**请求URL：**
+>  ${api.path}
+
+**请求方式：**
+- ${api.httpMethod}
+
+**参数：**
+
+|参数名|说明|默认值|类型|必选|
+|:----    |-----|:---|:----- |:---- |
+#foreach($param in $api.requestParams)
+| ${param.name}|${param.description} | ${param.defaultValue}|${param.type} |  ${param.required} |
+#end
+
+
+ **返回示例**
+
+``` json
+${api.demoResponse}
+
+```
+
+ **返回参数说明**
+
+|参数名|说明|默认值|类型|必选|
+|:---- |-----|:---|:----- |:---- |
+#foreach($param in $api.responseParams)
+| ${param.name}|${param.description} | ${param.defaultValue}|${param.type} |  ${param.required} |
+#end
+
+_备注:_
+ _${api.remark}_
+
+
+**返回值模型**
+
+#set($model=$api.resultModel)
+
+-  ${model.description}
+
+|字段|类型|空|默认|注释|
+|----    |----    |--- |---|--- |
+#foreach($prop in $model.propertyList)
+|${prop.name}    |${prop.type}    |${prop.required} |${prop.defaultValue}  |  ${prop.description}           |
+#end
+
+_备注:_
+ _${model.remark}_
+
+
+---
+#end
+
+
+错误码
+---
+
+|code|说明|
+|:---    |:-----   |
+#foreach($code in $apiDoc.codeList)
+|${code.code}  |${code.description} |
+#end
+
+
+
+
+- 更多返回错误代码请看首页的错误代码描述
+
+#end
+
+---
+
+
+
+
+# 数据字典(model)
+
+#foreach($model in $modelList)
+---
+
+${model.name}
+--
+
+**描述：**
+-  ${model.description}
+
+|字段|类型|空|默认|注释|
+|----    |----    |--- |---|--- |
+#foreach($prop in $model.propertyList)
+|${prop.name}    |${prop.type}    |${prop.required} |${prop.defaultValue}  |  ${prop.description}           |
+#end
+
+_备注:_
+ _${model.remark}_
+
+#end

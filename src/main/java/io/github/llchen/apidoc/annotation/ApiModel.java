@@ -1,5 +1,7 @@
 package io.github.llchen.apidoc.annotation;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.annotation.*;
 
 /**
@@ -11,6 +13,7 @@ import java.lang.annotation.*;
 @Inherited
 public @interface ApiModel {
 
+    String name() default "";
     /**
      * 数据模型描述
      */

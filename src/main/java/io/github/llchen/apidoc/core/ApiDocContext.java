@@ -1,6 +1,7 @@
 package io.github.llchen.apidoc.core;
 
 
+import io.github.llchen.apidoc.annotation.Api;
 import io.github.llchen.apidoc.annotation.ApiDoc;
 import io.github.llchen.apidoc.annotation.ApiModel;
 import io.github.llchen.apidoc.config.ApiDocProperties;
@@ -14,10 +15,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -59,25 +63,96 @@ public class ApiDocContext implements ApplicationListener<ContextRefreshedEvent>
         long start = System.currentTimeMillis();
         //初始化线程池
         initThreadPool(ctx);
-        String basePath = ctx.getClass().getResource("/").getPath();
-        basePath = basePath.endsWith("/") ? basePath : basePath + "/";
+        ClassFinder classFinder = new ClassPathClassFinder();
+
+        ConcurrentHashMap<String, Class<?>> controllerClasses = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Class<?>> modelClasses = new ConcurrentHashMap<>();
+
         String controllerPackage = properties.getControllerPackage();
-        if (StringUtils.isNotBlank(controllerPackage)) {
-            String modelPackage = properties.getModelPackage();
-            if (StringUtils.isNotBlank(modelPackage)) {
-                //先扫描model
-                scanModel(basePath, modelPackage);
+        String modelPackage = properties.getModelPackage();
+        boolean controllerFlag = StringUtils.isBlank(controllerPackage);
+        boolean modelFlag = StringUtils.isBlank(modelPackage);
+        if (controllerFlag || modelFlag) {
+            //TODO: 全包扫描
+            List<Class<?>> classList = classFinder.find("/");
+            for (Class<?> clazz : classList) {
+                if (clazz.getAnnotation(ApiDoc.class) != null) {
+                    controllerClasses.put(clazz.getCanonicalName(), clazz);
+                }
+
+                if (clazz.getAnnotation(Controller.class) != null) {
+                    controllerClasses.put(clazz.getCanonicalName(), clazz);
+                }
+
+                if (clazz.getAnnotation(RestController.class) != null) {
+                    controllerClasses.put(clazz.getCanonicalName(), clazz);
+                }
+
+                if (clazz.getAnnotation(ApiModel.class) != null) {
+                    modelClasses.put(clazz.getCanonicalName(), clazz);
+                }
             }
-            //扫描controller
-            scanController(ctx, basePath, controllerPackage);
-
         } else {
-            //TODO:全包扫描
+            if (!controllerFlag){
+                List<Class<?>> controllerClassList = classFinder.find(controllerPackage.replace(".", "/"));
+                for (Class<?> clazz:controllerClassList){
+                    if (clazz.getAnnotation(ApiDoc.class) != null) {
+                        controllerClasses.put(clazz.getCanonicalName(), clazz);
+                    }
 
+                    if (clazz.getAnnotation(Controller.class) != null) {
+                        controllerClasses.put(clazz.getCanonicalName(), clazz);
+                    }
+                    if (clazz.getAnnotation(RestController.class) != null) {
+                        controllerClasses.put(clazz.getCanonicalName(), clazz);
+                    }
+                }
+            }
+
+            if (!modelFlag){
+                List<Class<?>> modelClassList = classFinder.find(modelPackage.replace(".", "/"));
+                for (Class<?> clazz:modelClassList){
+                    if (clazz.getAnnotation(ApiModel.class) != null) {
+                        modelClasses.put(clazz.getCanonicalName(), clazz);
+                    }
+                }
+            }
         }
+
+        handleModel(modelClasses);
+        handleController(controllerClasses);
+
         executor.destroy();
         long time = System.currentTimeMillis() - start;
         LOGGER.info("扫描Api完毕,耗时:" + time / 1000.0 + "秒");
+    }
+
+
+
+    private void handleController(ConcurrentHashMap<String, Class<?>> controllerClasses) {
+        for (Class<?> clazz:controllerClasses.values()){
+            executor.execute(()->loadApi(clazz));
+        }
+    }
+
+    private void loadApi(Class<?> clazz) {
+        if (clazz.getAnnotation(ApiDoc.class)!=null){
+            apiDocBuilder.addApiDoc(clazz.getAnnotation(ApiDoc.class),clazz,null,properties);
+        }else if (clazz.getAnnotation(Controller.class)!=null){
+            apiDocBuilder.addApiDoc(clazz.getAnnotation(Controller.class),clazz,null,properties);
+        }else if (clazz.getAnnotation(RestController.class)!=null){
+            apiDocBuilder.addApiDoc(clazz.getAnnotation(RestController.class),clazz,null,properties);
+        }
+    }
+
+    private void handleModel(ConcurrentHashMap<String, Class<?>> modelClasses) {
+        for (Class<?> clazz:modelClasses.values()){
+            executor.execute(()->loadModel(clazz));
+        }
+    }
+
+    private void loadModel(Class<?> clazz) {
+        apiDocBuilder.addModel(clazz.getAnnotation(ApiModel.class),clazz);
     }
 
     /**
@@ -106,68 +181,9 @@ public class ApiDocContext implements ApplicationListener<ContextRefreshedEvent>
         executor = new Executor(poolExecutor);
     }
 
-    /**
-     * 扫描model类
-     */
-    private void scanModel(String basePath, String modelPackage) {
-        String filePath = basePath + modelPackage.replace(".", "/");
-        File dir = new File(filePath);
-        String[] classNames = dir.list((dir1, name) -> name.endsWith(".class"));
-        if (classNames != null && classNames.length > 0) {
-            String classFullName;
-            for (String className : classNames) {
-                classFullName = modelPackage + "." + className.substring(0, className.lastIndexOf("."));
-                try {
-                    Class<?> aClass = Class.forName(classFullName);
-                    ApiModel apiModel = aClass.getAnnotation(ApiModel.class);
-                    if (apiModel != null) {
-                        //多线程加载
-                        executor.execute(() -> loadModel(aClass, apiModel));
-                    }
-                } catch (ClassNotFoundException e) {
-                    LOGGER.warn("加载类:{}失败", classFullName, e);
-                }
-            }
-        }
 
-    }
 
-    private void loadModel(Class<?> modelClass, ApiModel apiModel) {
-        apiDocBuilder.addModel(apiModel, modelClass);
-    }
 
-    /**
-     * 扫描controller类
-     */
-    private void scanController(ApplicationContext ctx, String basePath, String controllerPackage) {
-        String filePath = basePath + controllerPackage.replace(".", "/");
-        File dir = new File(filePath);
-        String[] classNames = dir.list((dir1, name) -> name.endsWith(".class"));
-        if (classNames != null && classNames.length > 0) {
-            String classFullName;
-            for (String className : classNames) {
-                classFullName = controllerPackage + "." + className.substring(0, className.lastIndexOf("."));
-                try {
-                    Class<?> aClass = Class.forName(classFullName);
-                    ApiDoc apiDoc = aClass.getAnnotation(ApiDoc.class);
-                    if (apiDoc != null) {
-                        Object apiDocObject = ctx.getBean(aClass);
-                        //多线程加载
-                        executor.execute(() -> loadApi(aClass, apiDocObject, apiDoc));
-                    }
-                } catch (ClassNotFoundException e) {
-                    LOGGER.warn("加载类:{}失败", classFullName, e);
-                }
-            }
-        }
-    }
-
-    /**
-     * 加载api
-     */
-    private void loadApi(Class<?> apiDocClass, Object apiDocObject, ApiDoc apiDoc) {
-        apiDocBuilder.addApiDoc(apiDoc, apiDocClass, apiDocObject,properties);
-    }
 
 
     /**

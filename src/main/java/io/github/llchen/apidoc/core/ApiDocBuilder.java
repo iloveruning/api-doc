@@ -8,6 +8,7 @@ import io.github.llchen.apidoc.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
@@ -34,6 +35,43 @@ public class ApiDocBuilder {
 
 
     public void addApiDoc(ApiDoc apiDoc, Class<?> apiDocClass, Object apiDocObject, ApiDocProperties properties) {
+        Document document = buildApiDoc(apiDoc, apiDocClass, properties);
+        Method[] methods = apiDocClass.getDeclaredMethods();
+        List<ApiDefinition> apiList = new LinkedList<>();
+        for (Method method : methods) {
+            if (!Modifier.isPublic(method.getModifiers())) {
+                method.setAccessible(true);
+            }
+            Api api = method.getAnnotation(Api.class);
+            if (api == null) {
+                continue;
+            }
+            apiList.add(buildApi(api, method, document.getBasePath()));
+        }
+        document.setApiList(apiList);
+        docMap.put(document.getName(), document);
+    }
+
+
+    public void addApiDoc(Controller controller, Class<?> apiDocClass, Object apiDocObject, ApiDocProperties properties) {
+        Document document = buildApiDoc(apiDoc, apiDocClass, properties);
+        Method[] methods = apiDocClass.getDeclaredMethods();
+        List<ApiDefinition> apiList = new LinkedList<>();
+        for (Method method : methods) {
+            if (!Modifier.isPublic(method.getModifiers())) {
+                method.setAccessible(true);
+            }
+            Api api = method.getAnnotation(Api.class);
+            if (api == null) {
+                continue;
+            }
+            apiList.add(buildApi(api, method, document.getBasePath()));
+        }
+        document.setApiList(apiList);
+        docMap.put(document.getName(), document);
+    }
+
+    public void addApiDoc(RestController apiDoc, Class<?> apiDocClass, Object apiDocObject, ApiDocProperties properties) {
         Document document = buildApiDoc(apiDoc, apiDocClass, properties);
         Method[] methods = apiDocClass.getDeclaredMethods();
         List<ApiDefinition> apiList = new LinkedList<>();

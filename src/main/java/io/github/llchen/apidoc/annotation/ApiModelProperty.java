@@ -40,8 +40,4 @@ public @interface ApiModelProperty {
      */
     String example() default "";
 
-    /**
-     * 数据类型
-     */
-    DataType type() default DataType.STRING;
 }

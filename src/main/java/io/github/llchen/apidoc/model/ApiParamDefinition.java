@@ -19,4 +19,5 @@ public class ApiParamDefinition implements Serializable {
     private String defaultValue;
 
     private ApiModelDefinition model;
+    private Class<?> clazz;
 }

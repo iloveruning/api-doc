@@ -1,5 +1,8 @@
 package io.github.llchen.apidoc.annotation;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import java.lang.annotation.*;
 
 /**
@@ -37,7 +40,7 @@ public @interface Api {
     /**
      * http请求方式
      */
-    String[] httpMethod() default {};
+    RequestMethod[] httpMethod() default {};
 
 
     /**
@@ -62,5 +65,7 @@ public @interface Api {
      *返回值模型
      */
     Class<?> resultModel() default Void.class;
+
+
 
 }

@@ -24,5 +24,6 @@ public class ApiDefinition implements Serializable {
     private List<ApiParamDefinition> responseParams;
 
     private ApiModelDefinition resultModel;
+    private Class<?> resultClass;
 
 }

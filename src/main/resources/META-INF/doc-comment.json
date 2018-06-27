@@ -1,0 +1,287 @@
+{
+	"com.hfutonline.mly.modules.news.controller.ArticleTagController":{
+		"className":"com.hfutonline.mly.modules.news.controller.ArticleTagController",
+		"doc":" \n\n @author chenliangliang\n @date 2018-02-21 15:42:00\n",
+		"methods":[]
+	},
+	"com.hfutonline.mly.modules.news.controller.CatalogController":{
+		"className":"com.hfutonline.mly.modules.news.controller.CatalogController",
+		"doc":" 栏目\n\n @author chenliangliang\n @date 2018-02-21 15:42:00\n",
+		"methods":[{
+			"doc":" 信息\n",
+			"methodName":"info(id)"
+		},{
+			"doc":" 保存\n",
+			"methodName":"save(catalog)"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(ids)"
+		},{
+			"methodName":"select()"
+		},{
+			"doc":" 修改\n",
+			"methodName":"update(catalog)"
+		},{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		}]
+	},
+	"com.hfutonline.mly.modules.news.controller.TagController":{
+		"className":"com.hfutonline.mly.modules.news.controller.TagController",
+		"doc":" 标签管理\n\n @author chenliangliang\n @date 2018-02-21 15:41:59\n",
+		"methods":[{
+			"doc":" 信息\n",
+			"methodName":"info(id)"
+		},{
+			"doc":" 修改\n",
+			"methodName":"update(tag)"
+		},{
+			"doc":" 标签列表\n",
+			"methodName":"select()"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(ids)"
+		},{
+			"doc":" 保存\n",
+			"methodName":"save(tag)"
+		},{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		}]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysUserController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysUserController",
+		"doc":" <p>\n 系统用户 前端控制器\n </p>\n\n @author chenliangliang\n @since 2018-02-18\n",
+		"methods":[{
+			"doc":" 获取用户信息\n @param userId 用户id\n @return 用户详细信息\n",
+			"methodName":"info(userId)"
+		},{
+			"doc":" 获取登录的用户信息\n",
+			"methodName":"info()"
+		},{
+			"doc":" 修改登录用户密码\n",
+			"methodName":"password(password,newPassword)"
+		},{
+			"doc":" 保存用户\n",
+			"methodName":"save(user)"
+		},{
+			"doc":" 所有用户列表\n",
+			"methodName":"list(params)"
+		},{
+			"doc":" 修改用户\n",
+			"methodName":"update(user)"
+		},{
+			"doc":" 删除用户\n",
+			"methodName":"delete(userIds)"
+		}]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysLoginController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysLoginController",
+		"doc":" 登录相关\n \n @author chenliangliang\n @date 2018/2/18\n",
+		"methods":[{
+			"doc":" 退出\n",
+			"methodName":"logout()"
+		},{
+			"methodName":"registerPage()"
+		},{
+			"methodName":"captcha(request,response)"
+		},{
+			"doc":" 登录\n",
+			"methodName":"login(username,password,captcha,session)"
+		},{
+			"methodName":"register(name,pw,model)"
+		}]
+	},
+	"com.hfutonline.mly.modules.web.controller.ServerController":{
+		"className":"com.hfutonline.mly.modules.web.controller.ServerController",
+		"doc":" 服务器表\n\n @author chenliangliang\n @date 2018-02-25 19:42:13\n",
+		"methods":[{
+			"doc":" 修改\n",
+			"methodName":"update(server)"
+		},{
+			"doc":" 信息\n",
+			"methodName":"info(id)"
+		},{
+			"doc":" 服务器列表\n",
+			"methodName":"select()"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(ids)"
+		},{
+			"doc":" 保存\n",
+			"methodName":"save(server)"
+		},{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		}]
+	},
+	"com.hfutonline.mly.modules.web.controller.AppController":{
+		"className":"com.hfutonline.mly.modules.web.controller.AppController",
+		"doc":" 应用表\n\n @author chenliangliang\n @date 2018-02-25 21:25:16\n",
+		"methods":[{
+			"doc":" 信息\n",
+			"methodName":"info(id)"
+		},{
+			"doc":" 修改\n",
+			"methodName":"update(app)"
+		},{
+			"methodName":"manageCatalog(app)"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(ids)"
+		},{
+			"methodName":"manageCatalog(appId)"
+		},{
+			"doc":" 注册应用\n",
+			"methodName":"register(app)"
+		},{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		}]
+	},
+	"com.hfutonline.mly.modules.news.controller.ArticleController":{
+		"className":"com.hfutonline.mly.modules.news.controller.ArticleController",
+		"doc":" 文章管理\n\n @author chenliangliang\n @date 2018-02-21 15:42:00\n",
+		"methods":[{
+			"methodName":"detail(id)"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(ids)"
+		},{
+			"doc":" 修改\n",
+			"methodName":"update(article)"
+		},{
+			"doc":" 审核文章\n",
+			"methodName":"audit(id)"
+		},{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		},{
+			"doc":" 保存\n",
+			"methodName":"save(article)"
+		}]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysUserRoleController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysUserRoleController",
+		"doc":" <p>\n 用户与角色对应关系 前端控制器\n </p>\n\n @author chenliangliang\n @since 2018-02-18\n",
+		"methods":[]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysPageController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysPageController",
+		"doc":"系统页面视图\n\n @author chenliangliang\n @date 2018/2/18\n",
+		"methods":[{
+			"methodName":"main()"
+		},{
+			"methodName":"notFound()"
+		},{
+			"methodName":"index(model)"
+		},{
+			"methodName":"upload()"
+		},{
+			"methodName":"module(module,url)"
+		},{
+			"methodName":"login()"
+		}]
+	},
+	"com.hfutonline.mly.modules.web.controller.AppCatalogController":{
+		"className":"com.hfutonline.mly.modules.web.controller.AppCatalogController",
+		"doc":" \n\n @author chenliangliang\n @date 2018-02-25 21:25:16\n",
+		"methods":[]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysRoleMenuController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysRoleMenuController",
+		"doc":" <p>\n 角色与菜单对应关系 前端控制器\n </p>\n\n @author chenliangliang\n @since 2018-02-18\n",
+		"methods":[]
+	},
+	"com.hfutonline.mly.modules.news.controller.CatalogTagController":{
+		"className":"com.hfutonline.mly.modules.news.controller.CatalogTagController",
+		"doc":" \n\n @author chenliangliang\n @date 2018-02-25 21:20:50\n",
+		"methods":[{
+			"doc":" 保存\n",
+			"methodName":"save(catalogTag)"
+		},{
+			"doc":" 信息\n",
+			"methodName":"info(id)"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(ids)"
+		},{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		},{
+			"doc":" 修改\n",
+			"methodName":"update(catalogTag)"
+		}]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysRoleController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysRoleController",
+		"doc":" <p>\n 角色 前端控制器\n </p>\n\n @author chenliangliang\n @since 2018-02-18\n",
+		"methods":[{
+			"doc":" 保存角色\n",
+			"methodName":"save(role)"
+		},{
+			"doc":" 删除角色\n",
+			"methodName":"delete(roleIds)"
+		},{
+			"doc":" 修改角色\n",
+			"methodName":"update(role)"
+		},{
+			"doc":" 角色列表\n",
+			"methodName":"select()"
+		},{
+			"doc":" 角色列表\n",
+			"methodName":"list(params)"
+		},{
+			"doc":" 角色信息\n",
+			"methodName":"info(roleId)"
+		}]
+	},
+	"com.hfutonline.mly.modules.web.controller.AppServerController":{
+		"className":"com.hfutonline.mly.modules.web.controller.AppServerController",
+		"doc":" \n\n @author chenliangliang\n @date 2018-02-25 21:25:16\n",
+		"methods":[]
+	},
+	"com.hfutonline.mly.modules.api.controller.ArticleApi":{
+		"className":"com.hfutonline.mly.modules.api.controller.ArticleApi",
+		"doc":" @author chenliangliang\n @date 2018/2/28\n",
+		"methods":[{
+			"methodName":"getArticleTitle(catalogId,page,size)"
+		},{
+			"methodName":"getArticleDetail(id)"
+		}]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysLogController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysLogController",
+		"doc":" <p>\n 系统日志 前端控制器\n </p>\n\n @author chenliangliang\n @since 2018-02-18\n",
+		"methods":[{
+			"doc":" 列表\n",
+			"methodName":"list(params)"
+		}]
+	},
+	"com.hfutonline.mly.modules.sys.controller.SysMenuController":{
+		"className":"com.hfutonline.mly.modules.sys.controller.SysMenuController",
+		"doc":" <p>\n 菜单管理 前端控制器\n </p>\n\n @author chenliangliang\n @since 2018-02-18\n",
+		"methods":[{
+			"doc":" 菜单信息\n",
+			"methodName":"info(menuId)"
+		},{
+			"doc":" 保存\n",
+			"methodName":"save(menu)"
+		},{
+			"doc":" 所有菜单列表\n",
+			"methodName":"list()"
+		},{
+			"doc":" 修改\n",
+			"methodName":"update(menu)"
+		},{
+			"doc":" 选择菜单(添加、修改菜单)\n",
+			"methodName":"select()"
+		},{
+			"doc":" 删除\n",
+			"methodName":"delete(menuId)"
+		},{
+			"doc":" 导航菜单\n @demoResponse {djjdjd}\n @return hdhdhd\n\n",
+			"methodName":"nav()"
+		}]
+	}
+}

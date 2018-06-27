@@ -22,7 +22,7 @@ clone项目代码
 
 ```
   <dependency>
-      <groupId>io.github.llchen</groupId>
+      <groupId>com.github.llchen</groupId>
       <artifactId>api-doc</artifactId>
       <version>0.1.0</version>
   </dependency>

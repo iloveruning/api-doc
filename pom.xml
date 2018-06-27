@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.llchen</groupId>
+    <groupId>com.github.llchen</groupId>
     <artifactId>api-doc</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <name>api-doc</name>
@@ -26,6 +26,8 @@
         <flexmark.version>0.34.0</flexmark.version>
         <commons-lang3.version>3.7</commons-lang3.version>
         <velocity.version>1.7</velocity.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -84,6 +86,25 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <!-- disable processing because the definition in META-INF/services breaks javac -->
+                    <proc>none</proc>
+                    <!--<compilerArgument>-proc:none</compilerArgument>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
